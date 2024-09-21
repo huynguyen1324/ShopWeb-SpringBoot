@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"> <!-- Khai báo kiểu tài liệu HTML và ngôn ngữ là tiếng Anh -->
+<head>
+    <meta charset="utf-8"> <!-- Đặt mã hóa ký tự là UTF-8 để hỗ trợ nhiều ngôn ngữ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Thiết lập viewport để tương thích với các thiết bị di động -->
+    <title>Books Store</title> <!-- Tiêu đề của trang web -->
+    
+    <!-- Đường dẫn tới file Bootstrap CSS từ CDN, giúp trang web có giao diện responsive -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container"> <!-- Sử dụng container Bootstrap để căn chỉnh nội dung -->
+        <div class="row"> <!-- Dùng row để tạo dòng, giúp bố cục được chia cột -->
+            <div class="col-md-8 mx-auto rounded border p-4 m-4"> <!-- Khối chứa form, căn giữa, có viền, padding và margin -->
+                <h2 class="text-center mb-5">New Product</h2> <!-- Tiêu đề form, căn giữa, margin-bottom là 5 -->
+
+                <!-- Form thêm mới sản phẩm, phương thức post, enctype để upload file -->
+                <form method="post" enctype="multipart/form-data" th:object="${productDto}">
+                    
+                    <!-- Nhập tên sản phẩm -->
+                    <div class="row mb-3"> <!-- Tạo một dòng chứa nhãn và trường nhập liệu -->
+                        <label class="col-sm-4 col-form-label">Name</label> <!-- Nhãn cho trường nhập liệu tên -->
+                        <div class="col-sm-8"> <!-- Cột chứa trường nhập liệu -->
+                            <input class="form-control" th:field="${productDto.name}"> <!-- Trường nhập tên sản phẩm -->
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'name' -->
+                            <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger" th:errors="${productDto.name}"></p>
+                        </div>
+                    </div>
+
+                    <!-- Nhập thương hiệu sản phẩm -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Brand</label> <!-- Nhãn cho trường nhập thương hiệu -->
+                        <div class="col-sm-8">
+                            <input class="form-control" th:field="${productDto.brand}" /> <!-- Trường nhập thương hiệu -->
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'brand' -->
+                            <p th:if="${#fields.hasErrors('brand')}" th:errors="${productDto.brand}" th:errorclass="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Chọn danh mục sản phẩm -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Category</label> <!-- Nhãn cho trường chọn danh mục -->
+                        <div class="col-sm-8">
+                            <select class="form-select" th:field="${productDto.category}"> <!-- Trường chọn danh mục sản phẩm -->
+                                <!-- Các lựa chọn trong danh mục -->
+                                <option value="Other">Other</option>
+                                <option value="Phones">Phones</option>
+                                <option value="Computers">Computers</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Printers">Printers</option>
+                                <option value="Cameras">Cameras</option>
+                            </select>
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'category' -->
+                            <p th:if="${#fields.hasErrors('category')}" th:errors="${productDto.category}" th:errorclass="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Nhập giá sản phẩm -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Price</label> <!-- Nhãn cho trường nhập giá -->
+                        <div class="col-sm-8">
+                            <input class="form-control" type="number" step="0.01" min="0" th:field="${productDto.price}" /> <!-- Trường nhập giá sản phẩm, giới hạn bước là 0.01, giá trị nhỏ nhất là 0 -->
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'price' -->
+                            <p th:if="${#fields.hasErrors('price')}" th:errors="${productDto.price}" th:errorclass="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Nhập mô tả sản phẩm -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Description</label> <!-- Nhãn cho trường nhập mô tả -->
+                        <div class="col-sm-8">
+                            <textarea class="form-control" th:field="${productDto.description}"></textarea> <!-- Trường nhập mô tả sản phẩm -->
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'description' -->
+                            <p th:if="${#fields.hasErrors('description')}" th:errors="${productDto.description}" th:errorclass="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Tải lên ảnh sản phẩm -->
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">Image</label> <!-- Nhãn cho trường tải ảnh -->
+                        <div class="col-sm-8">
+                            <input class="form-control" type="file" th:field="${productDto.imageFile}" /> <!-- Trường tải file ảnh -->
+                            <!-- Kiểm tra và hiển thị lỗi nếu có lỗi trong trường 'image' -->
+                            <p th:if="${#fields.hasErrors('imageFile')}" th:errors="${productDto.imageFile}" th:errorclass="text-danger"></p>
+                        </div>
+                    </div>
+
+                    <!-- Các nút hành động -->
+                    <div class="row">
+                        <div class="offset-sm-4 col-sm-4 d-grid"> <!-- Nút submit, căn giữa -->
+                            <button type="submit" class="btn btn-primary">Submit</button> <!-- Nút gửi form -->
+                        </div>
+                        <div class="col-sm-4 d-grid"> <!-- Nút hủy bỏ -->
+                            <a class="btn btn-outline-primary" href="/products" role="button">Cancel</a> <!-- Nút hủy, quay về danh sách sản phẩm -->
+                        </div>
+                    </div>
+
+                </form> <!-- Kết thúc form -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Đường dẫn tới file Bootstrap JS từ CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
